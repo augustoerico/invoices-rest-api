@@ -7,3 +7,4 @@ organization := "io.github.augustoerico"
 version := "1.0"
 
 libraryDependencies += "io.vertx" %% "vertx-lang-scala" % "3.4.1"
+libraryDependencies += "io.vertx" % "vertx-web" % "3.4.2"

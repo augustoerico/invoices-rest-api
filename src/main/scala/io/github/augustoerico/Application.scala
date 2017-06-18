@@ -1,7 +1,7 @@
 package io.github.augustoerico
 
-import io.vertx.scala.core.Vertx
-import io.vertx.scala.core.http.HttpServerRequest
+import io.vertx.core.Vertx
+import io.vertx.ext.web.{Router, RoutingContext}
 
 object Application extends App {
 
@@ -9,13 +9,26 @@ object Application extends App {
     println("Starting application")
 
     val vertx = Vertx.vertx()
-    vertx
-      .createHttpServer()
-        .requestHandler((request: HttpServerRequest) => {
-          println("Request received")
-          request.response().end("Hello, world!")
-        })
-      .listen(8080, "localhost")
+    val server = vertx.createHttpServer()
+
+    val router = Router.router(vertx)
+
+    router.get("/hello").handler((context: RoutingContext) => {
+      println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
+
+      val response = context.response()
+      response.setStatusCode(200).end("Hello!")
+    })
+
+
+    router.get("/bye").handler((context: RoutingContext) => {
+      println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
+
+      val response = context.response()
+      response.setStatusCode(200).end("Bye!")
+    })
+
+    server.requestHandler(router.accept _).listen(8080, "localhost")
 
   }
 
