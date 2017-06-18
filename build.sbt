@@ -6,6 +6,4 @@ organization := "io.github.augustoerico"
 
 version := "1.0"
 
-wartremoverErrors ++= Warts.unsafe
-
-wartremoverWarnings ++= Warts.unsafe
+libraryDependencies += "io.vertx" %% "vertx-lang-scala" % "3.4.1"
