@@ -9,6 +9,7 @@ import io.vertx.core.json.JsonArray
 
 import scala.collection.immutable.Map
 import io.vertx.core.{AsyncResult, Vertx}
+import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.{Router, RoutingContext}
 import io.vertx.lang.scala.json.JsonObject
 
@@ -25,6 +26,8 @@ object Application extends App {
 
     val router = Router.router(vertx)
 
+    router.route().handler(BodyHandler.create())
+
     router.get("/health").handler((context: RoutingContext) => {
       println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
       val formattedDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime)
@@ -35,10 +38,11 @@ object Application extends App {
     router.get("/v1/customers/:customerId/invoices").handler((context: RoutingContext) => {
       println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
 
+      val request = context.request()
       val query = new JsonObject()
-        .put("_id", context.request().getParam("customerId"))
-        .put("month", context.request().getParam("month"))
-        .put("filter", context.request().getParam("filter"))
+        .put("customerId", request.getParam("customerId"))
+        .put("month", request.getParam("month"))
+        .put("filter", request.getParam("filter"))
 
       new Repository(context.vertx()).find("invoices", query, (future: AsyncResult[java.util.List[JsonObject]]) => {
 
@@ -52,6 +56,30 @@ object Application extends App {
         }
 
       })
+    })
+
+    router.post("/v1/customers/:customerId/addresses/:addressId/invoices").handler((context: RoutingContext) => {
+      println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
+
+      val request = context.request()
+      val body = context.getBodyAsJson // TODO validate body
+
+      body
+        .put("customerId", request.getParam("customerId"))
+        .put("addressId", request.getParam("addressId"))
+
+      new Repository(context.vertx()).save("invoices", body, (future: AsyncResult[String]) => {
+        val response = context.response()
+
+        if (future.succeeded()) {
+          val id = future.result()
+          println(s"Invoice saved with id=$id")
+          response.setStatusCode(201).end(body.put("_id", id).encodePrettily())
+        } else {
+          future.cause().printStackTrace()
+        }
+      })
+
     })
 
     server.requestHandler(router.accept _).listen(8080, "localhost")
