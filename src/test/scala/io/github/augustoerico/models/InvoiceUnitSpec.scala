@@ -13,4 +13,13 @@ class InvoiceUnitSpec extends FlatSpec with Matchers {
     invoice.createdAt should be (0)
   }
 
+  "An Invoice" should "be created with default parameters" in {
+    val invoice = new Invoice("1", "2")
+    invoice.customerId should be ("1")
+    invoice.addressId should be ("2")
+    invoice._type should be ("shop")
+    invoice.amount should be (0.0)
+    invoice.createdAt should be >= 0L
+  }
+
 }
