@@ -1,6 +1,6 @@
 package io.github.augustoerico
 
-import io.github.augustoerico.handlers.{CreateHandler, GetHandler, HealthHandler, ListHandler}
+import io.github.augustoerico.handlers._
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.BodyHandler
@@ -16,6 +16,7 @@ object Application extends App {
     val router = Router.router(vertx)
 
     router.route().handler(BodyHandler.create())
+    router.route().handler(new InfoHandler().handle _)
 
     router.get("/health").handler(new HealthHandler().handle _)
     router.get("/v1/customers/:customerId/invoices").handler(new ListHandler().handle _)

@@ -9,8 +9,6 @@ import io.vertx.lang.scala.json.JsonObject
 class GetHandler extends Handler[RoutingContext] {
 
   override def handle(context: RoutingContext): Unit = {
-    println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
-
     val request = context.request()
 
     val query = new JsonObject()

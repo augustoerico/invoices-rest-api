@@ -9,8 +9,6 @@ import io.vertx.ext.web.RoutingContext
 class CreateHandler extends Handler[RoutingContext] {
 
   override def handle(context: RoutingContext): Unit = {
-    println(s"[${context.request().method()}] ${context.request().absoluteURI()}")
-
     val request = context.request()
     val body = context.getBodyAsJson // TODO validate body
 
