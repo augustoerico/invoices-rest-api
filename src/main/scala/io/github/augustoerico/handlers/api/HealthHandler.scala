@@ -1,4 +1,4 @@
-package io.github.augustoerico.handlers
+package io.github.augustoerico.handlers.api
 
 import java.text.SimpleDateFormat
 import java.util.Calendar

@@ -1,11 +1,11 @@
 package io.github.augustoerico.repository
 
 import io.github.augustoerico.models.Invoice
-import io.vertx.core.{AsyncResult, Handler, Vertx}
 import io.vertx.core.json.JsonObject
+import io.vertx.core.{AsyncResult, Vertx}
 import io.vertx.ext.mongo.MongoClient
 
-class Repository(vertx: Vertx) {
+class InvoiceRepository(vertx: Vertx) {
 
   val collection = "invoices"
 
@@ -21,11 +21,28 @@ class Repository(vertx: Vertx) {
 
   val client = MongoClient.createShared(vertx, config)
 
-  def save(invoice: Invoice, handler: Handler[AsyncResult[String]]): Unit = {
-    client.save(collection, invoice.toJsonObject, handler)
+  def save(invoice: Invoice, idHandler: (String) => Unit, failureHandler: (Throwable) => Unit): Unit = {
+
+    client.save(collection, invoice.toJsonObject, (future: AsyncResult[String]) => {
+      if (future.succeeded()) {
+        idHandler(future.result())
+      } else {
+        failureHandler(future.cause())
+      }
+    })
+
   }
 
-  def find(query: JsonObject, handler: Handler[AsyncResult[java.util.List[JsonObject]]]) : Unit = {
-    client.find(collection, query, handler)
+  def find(query: JsonObject, resultHandler: (java.util.List[JsonObject]) => Unit,
+           failureHandler: (Throwable) => Unit): Unit = {
+
+    client.find(collection, query, (future: AsyncResult[java.util.List[JsonObject]]) => {
+      if (future.succeeded()) {
+        resultHandler(future.result())
+      } else {
+        failureHandler(future.cause())
+      }
+    })
+
   }
 }

@@ -12,3 +12,4 @@ libraryDependencies += "io.vertx" % "vertx-mongo-client" % "3.4.2"
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % Test

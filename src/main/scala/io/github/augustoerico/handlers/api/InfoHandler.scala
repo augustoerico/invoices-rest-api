@@ -1,4 +1,4 @@
-package io.github.augustoerico.handlers
+package io.github.augustoerico.handlers.api
 
 import io.vertx.core.Handler
 import io.vertx.ext.web.RoutingContext
