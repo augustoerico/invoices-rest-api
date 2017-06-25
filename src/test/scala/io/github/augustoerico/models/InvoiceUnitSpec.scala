@@ -56,4 +56,17 @@ class InvoiceUnitSpec extends FlatSpec with Matchers {
     invoice.createdAt should be >= 0L
   }
 
+  "A JSON" should "be returned from an invoice" in {
+    val invoice = new Invoice("1", "2")
+    val json = invoice.toJsonObject
+
+    json shouldBe a [JsonObject]
+    json.getString("customerId") should be ("1")
+    json.getString("addressId") should be ("2")
+    json.getString("type") should be ("shop")
+    json.getDouble("amount") should be (0.0)
+    json.getLong("createdAt").longValue() should be >= 0L
+
+  }
+
 }

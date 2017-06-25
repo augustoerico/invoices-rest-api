@@ -51,7 +51,7 @@ class Invoice(
       .put("addressId", addressId)
       .put("type", _type)
       .put("amount", amount)
-      .put("createdAt", amount)
+      .put("createdAt", createdAt)
   }
 
 }
