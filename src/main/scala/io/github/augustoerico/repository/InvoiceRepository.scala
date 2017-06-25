@@ -1,10 +1,13 @@
 package io.github.augustoerico.repository
 
+import io.github.augustoerico.models.Invoice
 import io.vertx.core.{AsyncResult, Handler, Vertx}
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 
 class Repository(vertx: Vertx) {
+
+  val collection = "invoices"
 
   /**
     * FIXME use env vars
@@ -18,11 +21,11 @@ class Repository(vertx: Vertx) {
 
   val client = MongoClient.createShared(vertx, config)
 
-  def save(collection: String, json: JsonObject, handler: Handler[AsyncResult[String]]): Unit = {
-    client.save(collection, json, handler)
+  def save(invoice: Invoice, handler: Handler[AsyncResult[String]]): Unit = {
+    client.save(collection, invoice.toJsonObject, handler)
   }
 
-  def find(collection: String, query: JsonObject, handler: Handler[AsyncResult[java.util.List[JsonObject]]]) : Unit = {
+  def find(query: JsonObject, handler: Handler[AsyncResult[java.util.List[JsonObject]]]) : Unit = {
     client.find(collection, query, handler)
   }
 }

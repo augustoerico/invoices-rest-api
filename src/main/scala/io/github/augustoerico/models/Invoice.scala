@@ -9,7 +9,8 @@ class Invoice(
                val addressId: String,
                val _type: String,
                val amount: Double,
-               val createdAt: Long
+               val createdAt: Long,
+               var _id: String
              ) {
 
   if (customerId == null || customerId.isEmpty) {
@@ -36,22 +37,30 @@ class Invoice(
             customerId: String,
             addressId: String,
             _type: String = "shop",
-            amount: Double = 0.0
-          ) = this(customerId, addressId, _type, amount, Calendar.getInstance().getTimeInMillis)
+            amount: Double = 0.0,
+            _id: String = ""
+          ) = this(customerId, addressId, _type, amount, Calendar.getInstance().getTimeInMillis, _id)
 
   def this(json: JsonObject) = this(
-    json.getString("customerId"),
-    json.getString("addressId"),
+    json.getString("customerId", null),
+    json.getString("addressId", null),
     json.getString("type", "shop"),
-    json.getDouble("amount", 0.00)
+    json.getDouble("amount", 0.0),
+    json.getString("_id", "")
   )
 
   def toJsonObject: JsonObject = {
-    new JsonObject().put("customerId", customerId)
+    val json = new JsonObject().put("customerId", customerId)
       .put("addressId", addressId)
       .put("type", _type)
       .put("amount", amount)
       .put("createdAt", createdAt)
+
+    if (_id != null && !_id.isEmpty) {
+      json.put("_id", _id)
+    }
+
+    json
   }
 
 }
