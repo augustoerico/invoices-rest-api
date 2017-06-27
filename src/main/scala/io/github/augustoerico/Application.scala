@@ -23,7 +23,7 @@ object Application extends App {
     router.get("/v1/customers/:customerId/addresses/:addressId/invoices").handler(new ListByAddressHandler().handle _)
     router.post("/v1/customers/:customerId/addresses/:addressId/invoices").handler(new CreateHandler().handle _)
 
-    server.requestHandler(router.accept _).listen(8080, "localhost")
+    server.requestHandler(router.accept _).listen(8001, "localhost")
 
   }
 
