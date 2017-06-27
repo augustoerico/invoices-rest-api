@@ -1,5 +1,6 @@
 package io.github.augustoerico.handlers.api
 
+import io.github.augustoerico.builders.QueryBuilder
 import io.github.augustoerico.handlers.results.FailureHandler
 import io.github.augustoerico.repository.InvoiceRepository
 import io.vertx.core.Handler
@@ -13,9 +14,10 @@ class ListByAddressHandler extends Handler[RoutingContext] {
     val request = context.request()
     val response = context.response()
 
-    val query = new JsonObject()
-      .put("customerId", request.getParam("customerId"))
-      .put("addressId", request.getParam("addressId"))
+    val query = new QueryBuilder()
+      .withCustomerId(request.getParam("customerId"))
+      .withAddressId(request.getParam("addressId"))
+      .build
 
     val onSuccess = (result: java.util.List[JsonObject]) => {
       response.setStatusCode(200).end(new JsonArray(result).encodePrettily())

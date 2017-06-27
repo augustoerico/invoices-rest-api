@@ -20,12 +20,11 @@ This is a REST API for an invoice systems built using Scala. An invoice is defin
 - [ ] Integration tests
 - [ ] API tests
 - [ ] Refactor handlers
-- [ ] Fix filter issue
-- [ ] Do load test
+- [ ] Fix filter month issue
 
 ## Endpoints
 
-- List customer invoices with filter: `[GET] /v1/customer/:customerId/invoices[?{filter, month}]`
+- List customer invoices with filter: `[GET] /v1/customer/:customerId/invoices[?{type, month}]`
 
 - List customer invoices linked to address: `[GET]  /v1/customer/:customerId/addresses/:addressId/invoices`
 
@@ -37,8 +36,14 @@ This is a REST API for an invoice systems built using Scala. An invoice is defin
 }
 ```
 
-## Running the project
+## Instructions
 
+Run tests:
+```
+$ sbt test
+```
+
+Run application:
 ```
 $ sbt run
 ```
