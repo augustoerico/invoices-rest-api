@@ -4,7 +4,6 @@ import io.github.augustoerico.handlers.results.FailureHandler
 import io.github.augustoerico.models.Invoice
 import io.github.augustoerico.repository.InvoiceRepository
 import io.vertx.core.Handler
-import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.RoutingContext
 
 class CreateHandler extends Handler[RoutingContext] {
